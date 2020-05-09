@@ -1,23 +1,57 @@
-/**
- * Sample Skeleton for 'Scene.fxml' Controller Class
- */
-
 package it.polito.tdp.poweroutages;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.LinkedList;
+import java.util.List;
+
+import it.polito.tdp.poweroutages.DAO.PowerOutageDAO;
+import it.polito.tdp.poweroutages.model.Model;
+import it.polito.tdp.poweroutages.model.Nerc;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 public class FXMLController {
+	private Model model;
+	
+    @FXML
+    private ChoiceBox<String> boxNERC;
 
-    @FXML // ResourceBundle that was given to the FXMLLoader
-    private ResourceBundle resources;
+    @FXML
+    private TextField txtYears;
 
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
-    private URL location;
+    @FXML
+    private TextField txtHours;
 
-    @FXML // This method is called by the FXMLLoader when initialization is complete
+    @FXML
+    private Button btnCalculate;
+
+    @FXML
+    private TextArea txtArea;
+
+    @FXML
     void initialize() {
-
+    	
+        PowerOutageDAO poDAO = new PowerOutageDAO();
+        List<Nerc> nercs = new LinkedList<Nerc> ( poDAO.getNercList() );
+        ObservableList<String> list = FXCollections.observableArrayList();
+        
+        // creating list containing all options
+        for (Nerc n : nercs) {
+        	list.add(n.getValue());
+        }
+        
+        
+        //populate the NERC Choicebox;  
+        boxNERC.setItems(list);
     }
+
+	public void setModel(Model model) {
+		this.model = model;
+	}
+    
 }
+
